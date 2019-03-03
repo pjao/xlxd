@@ -36,7 +36,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 // define
 
-#define USB3XXX_MAXPACKETSIZE   1024        // must be multiple of 64
+//#define USB3XXX_MAXPACKETSIZE   1024        // must be multiple of 64
+#define USB3XXX_MAXPACKETSIZE   4096        // must be multiple of 64
 
 #define PKT_HEADER              0x61
 

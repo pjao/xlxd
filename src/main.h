@@ -60,8 +60,8 @@
 
 // reflector ---------------------------------------------------
 
-#define NB_OF_MODULES                 10
-//#define NB_OF_MODULES                   NB_MODULES_MAX
+//#define NB_OF_MODULES                 10
+#define NB_OF_MODULES                   NB_MODULES_MAX
 
 // protocols ---------------------------------------------------
 
@@ -114,9 +114,12 @@
 // Transcoder server --------------------------------------------
 
 #define TRANSCODER_PORT                 10100                               // UDP port
-#define TRANSCODER_KEEPALIVE_PERIOD     5                                   // in seconds
-#define TRANSCODER_KEEPALIVE_TIMEOUT    30                                  // in seconds
-#define TRANSCODER_AMBEPACKET_TIMEOUT   400                                 // in ms
+//#define TRANSCODER_KEEPALIVE_PERIOD     5                                   // in seconds
+//#define TRANSCODER_KEEPALIVE_TIMEOUT    30                                  // in seconds
+//#define TRANSCODER_AMBEPACKET_TIMEOUT   400                                 // in ms
+#define TRANSCODER_KEEPALIVE_PERIOD     2                                    // in seconds
+#define TRANSCODER_KEEPALIVE_TIMEOUT    (TRANSCODER_KEEPALIVE_PERIOD + 1)    // in seconds
+#define TRANSCODER_AMBEPACKET_TIMEOUT   (TRANSCODER_KEEPALIVE_PERIOD * 1000) // in ms
 
 // codec --------------------------------------------------------
 

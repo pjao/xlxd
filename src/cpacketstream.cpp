@@ -54,7 +54,21 @@ bool CPacketStream::Open(const CDvHeaderPacket &DvHeader, CClient *client)
         m_DvHeader = DvHeader;
         m_OwnerClient = client;
         m_LastPacketTime.Now();
-        m_CodecStream = g_Transcoder.GetStream(this, client->GetCodec());
+//        m_CodecStream = g_Transcoder.GetStream(this, client->GetCodec());
+	if(
+               DvHeader.GetRpt2Module() == 'A' // WorldWide(english)
+            || DvHeader.GetRpt2Module() == 'B' // Norte
+            || DvHeader.GetRpt2Module() == 'C' // Fusion-PT TG268913
+            || DvHeader.GetRpt2Module() == 'D' // Nacional TG268
+            || DvHeader.GetRpt2Module() == 'E' // DSTAR<>DMR TG268912
+            || DvHeader.GetRpt2Module() == 'F' // Portugues TG915
+            || DvHeader.GetRpt2Module() == 'J' // Jota TG907
+            || DvHeader.GetRpt2Module() == 'H' // ARAT Club
+            || DvHeader.GetRpt2Module() == 'Q' // Chat
+           )
+		m_CodecStream = g_Transcoder.GetStream(this, client->GetCodec());
+	else
+		m_CodecStream = g_Transcoder.GetStream(this, CODEC_NONE);
         ok = true;
     }
     return ok;
