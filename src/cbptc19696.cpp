@@ -26,12 +26,18 @@
 #include <cassert>
 #include <cstring>
 
-CBPTC19696::CBPTC19696()
+CBPTC19696::CBPTC19696():
+m_rawData(NULL),
+m_deInterData(NULL)
 {
+    m_rawData     = new bool[196];
+    m_deInterData = new bool[196];
 }
 
 CBPTC19696::~CBPTC19696()
 {
+    delete[] m_rawData;
+    delete[] m_deInterData;
 }
 
 // The main decode function

@@ -46,7 +46,7 @@
 // class
 
 class CUdpSocket
-{
+{	
 public:
     // constructor
     CUdpSocket();

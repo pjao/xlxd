@@ -94,7 +94,7 @@
 // XLX
 #define XLX_PORT                        10002                               // UDP port
 #define XLX_KEEPALIVE_PERIOD            1                                   // in seconds
-#define XLX_KEEPALIVE_TIMEOUT           (XLX_KEEPALIVE_PERIOD*30)           // in seconds
+#define XLX_KEEPALIVE_TIMEOUT           (XLX_KEEPALIVE_PERIOD*10)           // in seconds
 #define XLX_RECONNECT_PERIOD            5                                   // in seconds
 
 // DMRPlus (dongle)
@@ -106,7 +106,7 @@
 
 // DMRMmdvm
 #define DMRMMDVM_PORT                   62030                               // UDP port
-#define DMRMMDVM_KEEPALIVE_PERIOD       10                                  // in seconds
+#define DMRMMDVM_KEEPALIVE_PERIOD       10                                 // in seconds
 #define DMRMMDVM_KEEPALIVE_TIMEOUT      (DMRMMDVM_KEEPALIVE_PERIOD*10)      // in seconds
 #define DMRMMDVM_REFLECTOR_SLOT         DMR_SLOT2
 #define DMRMMDVM_REFLECTOR_COLOUR       1
@@ -114,9 +114,9 @@
 // Transcoder server --------------------------------------------
 
 #define TRANSCODER_PORT                 10100                               // UDP port
-#define TRANSCODER_KEEPALIVE_PERIOD     5                                   // in seconds
-#define TRANSCODER_KEEPALIVE_TIMEOUT    30                                  // in seconds
-#define TRANSCODER_AMBEPACKET_TIMEOUT   400                                 // in ms
+#define TRANSCODER_KEEPALIVE_PERIOD     2                                   // in seconds
+#define TRANSCODER_KEEPALIVE_TIMEOUT    (TRANSCODER_KEEPALIVE_PERIOD + 1)   // in seconds
+#define TRANSCODER_AMBEPACKET_TIMEOUT   (TRANSCODER_KEEPALIVE_PERIOD * 1000) // in ms
 
 // codec --------------------------------------------------------
 
@@ -163,7 +163,7 @@ typedef unsigned int            uint;
 ////////////////////////////////////////////////////////////////////////////////////////
 // macros
 
-#define MIN(a,b) 				((a) < (b))?(a):(b)
+#define MIN(a,b) 				((float)(a) < (float)(b))?(a):(b)
 #define MAX(a,b) 				((a) > (b))?(a):(b)
 #define MAKEWORD(low, high)		((uint16)(((uint8)(low)) | (((uint16)((uint8)(high))) << 8)))
 #define MAKEDWORD(low, high)	((uint32)(((uint16)(low)) | (((uint32)((uint16)(high))) << 16)))
@@ -191,6 +191,9 @@ extern CGateKeeper g_GateKeeper;
 
 class CTranscoder;
 extern CTranscoder g_Transcoder;
+
+class CPacketStream;
+extern CPacketStream g_PacketStream;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////

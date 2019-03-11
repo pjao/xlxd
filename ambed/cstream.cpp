@@ -177,7 +177,8 @@ void CStream::Task(void)
     CPacketQueue *queue;
     
     // anything coming in from codec client ?
-    if ( m_Socket.Receive(&Buffer, &Ip, 1) != -1 )
+//    if ( m_Socket.Receive(&Buffer, &Ip, 1) != -1 )
+    if ( m_Socket.Receive(&Buffer, &Ip, 20) != -1 )  // change from 1 to 20
     {
         // crack packet
         if ( IsValidDvFramePacket(Buffer, &uiPid, Ambe) )

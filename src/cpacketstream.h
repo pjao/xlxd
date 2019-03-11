@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 //#define STREAM_TIMEOUT      (0.600)
-#define STREAM_TIMEOUT      (1.600)
+#define STREAM_TIMEOUT      (TRANSCODER_AMBEPACKET_TIMEOUT / 1000.0f)
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // class
@@ -55,7 +55,8 @@ public:
     void Push(CPacket *);
     void Tickle(void)                               { m_LastPacketTime.Now(); }
     bool IsEmpty(void) const;
-    
+    void TranscoderModuleOn(const std::string TranscoderModuleOn );
+
     // get
     CClient         *GetOwnerClient(void)           { return m_OwnerClient; }
     const CIp       *GetOwnerIp(void);

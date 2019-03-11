@@ -156,7 +156,7 @@ CPacketStream *CProtocol::GetStream(uint16 uiStreamId, const CIp *Ip)
     CPacketStream *stream = NULL;
     
     // find if we have a stream with same streamid in our cache
-    for ( int i = 0; (i < m_Streams.size()) && (stream == NULL); i++ )
+    for ( unsigned int i = 0; (i < m_Streams.size()) && (stream == NULL); i++ )
     {
         if ( m_Streams[i]->GetStreamId() == uiStreamId )
         {
@@ -182,7 +182,7 @@ void CProtocol::CloseStreamForDvLastFramePacket(CDvLastFramePacket *Frame, const
 
 void CProtocol::CheckStreamsTimeout(void)
 {
-    for ( int i = 0; i < m_Streams.size(); i++ )
+    for ( unsigned int i = 0; i < m_Streams.size(); i++ )
     {
         // time out ?
         m_Streams[i]->Lock();

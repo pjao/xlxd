@@ -34,7 +34,7 @@
 #define STATUS_LOGGED               1
 
 // timeout
-#define AMBED_OPENSTREAM_TIMEOUT    200     // in ms
+// #define AMBED_OPENSTREAM_TIMEOUT    400     // in ms
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -65,7 +65,7 @@ CTranscoder::~CTranscoder()
     // close all streams
     m_Mutex.lock();
     {
-        for ( int i = 0; i < m_Streams.size(); i++ )
+        for ( unsigned int i = 0; i < m_Streams.size(); i++ )
         {
             delete m_Streams[i];
         }
@@ -120,7 +120,7 @@ void CTranscoder::Close(void)
     // close all streams
     m_Mutex.lock();
     {
-        for ( int i = 0; i < m_Streams.size(); i++ )
+        for ( unsigned int i = 0; i < m_Streams.size(); i++ )
         {
             delete m_Streams[i];
         }
@@ -185,7 +185,6 @@ void CTranscoder::Task(void)
             }
             m_bConnected = true;
         }
-        
     }
     
     // keep client alive
@@ -219,7 +218,7 @@ CCodecStream *CTranscoder::GetStream(CPacketStream *PacketStream, uint8 uiCodecI
             m_Socket.Send(Buffer, m_Ip, TRANSCODER_PORT);
             
             // wait relpy here
-            if ( m_SemaphoreOpenStream.WaitFor(AMBED_OPENSTREAM_TIMEOUT) )
+            if ( m_SemaphoreOpenStream.WaitFor(TRANSCODER_AMBEPACKET_TIMEOUT) )
             {
                 if ( m_bStreamOpened )
                 {
@@ -255,7 +254,6 @@ CCodecStream *CTranscoder::GetStream(CPacketStream *PacketStream, uint8 uiCodecI
             {
                 std::cout << "ambed openstream timeout" << std::endl;
             }
-            
         }
     }
     return stream;
@@ -271,7 +269,7 @@ void CTranscoder::ReleaseStream(CCodecStream *stream)
         bool found = false;
         Lock();
         {
-            for ( int i = 0; (i < m_Streams.size()) && !found; i++ )
+            for ( unsigned int i = 0; (i < m_Streams.size()) && !found; i++ )
             {
                 // compare object pointers
                 if ( (m_Streams[i]) ==  stream )
