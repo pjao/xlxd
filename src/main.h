@@ -94,7 +94,7 @@
 // XLX
 #define XLX_PORT                        10002                               // UDP port
 #define XLX_KEEPALIVE_PERIOD            1                                   // in seconds
-#define XLX_KEEPALIVE_TIMEOUT           (XLX_KEEPALIVE_PERIOD*10)           // in seconds
+#define XLX_KEEPALIVE_TIMEOUT           (XLX_KEEPALIVE_PERIOD*30)           // in seconds
 #define XLX_RECONNECT_PERIOD            5                                   // in seconds
 
 // DMRPlus (dongle)
