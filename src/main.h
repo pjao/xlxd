@@ -116,7 +116,7 @@
 #define TRANSCODER_PORT                 10100                               // UDP port
 #define TRANSCODER_KEEPALIVE_PERIOD     2                                   // in seconds
 #define TRANSCODER_KEEPALIVE_TIMEOUT    (TRANSCODER_KEEPALIVE_PERIOD + 1)   // in seconds
-#define TRANSCODER_AMBEPACKET_TIMEOUT   (TRANSCODER_KEEPALIVE_PERIOD * 1000) // in ms
+#define TRANSCODER_AMBEPACKET_TIMEOUT   (TRANSCODER_KEEPALIVE_TIMEOUT * 1000) // in ms
 
 // codec --------------------------------------------------------
 
