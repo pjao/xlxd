@@ -176,7 +176,7 @@ bool CVocodecs::Init(void)
     // at this point we should have only remaining an unique 3 channels
     // and or a unique single channel
     std::vector<CVocodecChannel *>  Combined3003And3000DeviceChannels;
-    for ( int i = 0; i < m_FtdiDeviceDescrs.size(); i++ )
+    for ( unsigned int i = 0; i < m_FtdiDeviceDescrs.size(); i++ )
     {
         CFtdiDeviceDescr *descr1 = m_FtdiDeviceDescrs[i];
         CFtdiDeviceDescr *descr2 = NULL;
@@ -185,7 +185,7 @@ bool CVocodecs::Init(void)
         {
             // any single channel device to pair with ?
             bool found = false;
-            int j = 0;
+            unsigned int j = 0;
             while ( !found && (j < m_FtdiDeviceDescrs.size()) )
             {
                 descr2 = m_FtdiDeviceDescrs[j];
