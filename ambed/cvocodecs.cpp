@@ -136,7 +136,7 @@ bool CVocodecs::Init(void)
             // found one ?
             if ( found )
             {
-                // yes, create and pairboth interfaces
+                // yes, create and pair both interfaces
                 iNbCh += CFtdiDeviceDescr::CreateInterfacePair(descr1, descr2, &PairsOf3000DevicesChs);
                 // and flag as used
                 descr1->SetUsed(true);
@@ -153,21 +153,54 @@ bool CVocodecs::Init(void)
         CFtdiDeviceDescr *descr2 = NULL;
         if ( !descr1->IsUsed() && (descr1->GetNbChannels() == 3) )
         {
-            // any other odd channel device to pair with ?
-            // any other single channel device to pair with ?
+            // any other 3 channel device to pair with ?
             bool found = false;
             unsigned int j = i+1;
             while ( !found && (j < m_FtdiDeviceDescrs.size()) )
             {
                 descr2 = m_FtdiDeviceDescrs[j];
+<<<<<<< HEAD
                 found = (!descr2->IsUsed() && IsOdd(descr2->GetNbChannels()));
+=======
+                found = (!descr2->IsUsed() && (descr2->GetNbChannels() == 3));
+>>>>>>> upstream/master
                 j++;
             }
             // found one ?
             if ( found )
             {
-                // yes, create and pairboth interfaces
+                // yes, create and pair both interfaces
                 iNbCh += CFtdiDeviceDescr::CreateInterfacePair(descr1, descr2, &Multi3003DevicesChs);
+                // and flag as used
+                descr1->SetUsed(true);
+                descr2->SetUsed(true);
+            }
+        }
+    }
+    // at this point we should have only remaining an unique 3 channels
+    // and or a unique single channel
+    std::vector<CVocodecChannel *>  Combined3003And3000DeviceChannels;
+    for ( int i = 0; i < m_FtdiDeviceDescrs.size(); i++ )
+    {
+        CFtdiDeviceDescr *descr1 = m_FtdiDeviceDescrs[i];
+        CFtdiDeviceDescr *descr2 = NULL;
+        // Any 3003  ?
+        if ( !descr1->IsUsed() && (descr1->GetNbChannels() == 3) )
+        {
+            // any single channel device to pair with ?
+            bool found = false;
+            int j = 0;
+            while ( !found && (j < m_FtdiDeviceDescrs.size()) )
+            {
+                descr2 = m_FtdiDeviceDescrs[j];
+                found = ((descr1 != descr2) && !descr2->IsUsed() && (descr2->GetNbChannels() == 1));
+                j++;
+            }
+            // found one ?
+            if ( found )
+            {
+                // yes, create and pair both interfaces
+                iNbCh += CFtdiDeviceDescr::CreateInterfacePair(descr1, descr2, &Combined3003And3000DeviceChannels);
                 // and flag as used
                 descr1->SetUsed(true);
                 descr2->SetUsed(true);
@@ -181,11 +214,24 @@ bool CVocodecs::Init(void)
             }
         }
     }
-    
+    // at this point we should possible only have unique 3003 remaining
+
     // now agregate channels by order of priority
     // for proper load sharing
+<<<<<<< HEAD
 
     // next BaoFarm devices
+=======
+    // pairs of 3000 devices first
+    {
+        for ( int i = 0;  i < PairsOf3000DevicesChs.size(); i++ )
+        {
+            m_Channels.push_back(PairsOf3000DevicesChs.at(i));
+        }
+        PairsOf3000DevicesChs.clear();
+    }
+    // next the left-over single 3003 device
+>>>>>>> upstream/master
     {
         int n = (int)MultiBAOFarmDevicesChs.size() / 4;
         for ( unsigned int i = 0; i < 4; i++ )
@@ -197,12 +243,20 @@ bool CVocodecs::Init(void)
         }
         MultiBAOFarmDevicesChs.clear();
     }
+<<<<<<< HEAD
 
     // and finally interlace multi-3003 and pairs of 3003 devices which always
     // results to 6 channels per pair of 3003
     {
         int n = (int)Multi3003DevicesChs.size() / 6;
         for ( unsigned int i = 0; i < 6; i++ )
+=======
+    // finally interlace multi-3003 and pairs of 3003 devices which always
+    // results to 6 channels per pair of 3003
+    {
+        int n = (int)Multi3003DevicesChs.size() / 6;
+        for ( int i = 0; (i < 6) && (n != 0); i++ )
+>>>>>>> upstream/master
         {
             for ( int j = 0; j < n; j++ )
             {
@@ -211,6 +265,7 @@ bool CVocodecs::Init(void)
         }
         Multi3003DevicesChs.clear();
     }
+<<<<<<< HEAD
     
     // next the left-over single 3003 device
     {
@@ -229,6 +284,17 @@ bool CVocodecs::Init(void)
         }
         PairsOf3000DevicesChs.clear();
     }
+=======
+    // and finaly the hybrid combination of 3003 / 3000
+    {
+        for ( int i = 0;  i < Combined3003And3000DeviceChannels.size(); i++ )
+        {
+            m_Channels.push_back(Combined3003And3000DeviceChannels.at(i));
+        }
+        Combined3003And3000DeviceChannels.clear();
+    }
+
+>>>>>>> upstream/master
     
     // done
     if ( ok )
