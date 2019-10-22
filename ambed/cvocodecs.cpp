@@ -159,11 +159,7 @@ bool CVocodecs::Init(void)
             while ( !found && (j < m_FtdiDeviceDescrs.size()) )
             {
                 descr2 = m_FtdiDeviceDescrs[j];
-<<<<<<< HEAD
                 found = (!descr2->IsUsed() && IsOdd(descr2->GetNbChannels()));
-=======
-                found = (!descr2->IsUsed() && (descr2->GetNbChannels() == 3));
->>>>>>> upstream/master
                 j++;
             }
             // found one ?
@@ -218,20 +214,8 @@ bool CVocodecs::Init(void)
 
     // now agregate channels by order of priority
     // for proper load sharing
-<<<<<<< HEAD
 
     // next BaoFarm devices
-=======
-    // pairs of 3000 devices first
-    {
-        for ( int i = 0;  i < PairsOf3000DevicesChs.size(); i++ )
-        {
-            m_Channels.push_back(PairsOf3000DevicesChs.at(i));
-        }
-        PairsOf3000DevicesChs.clear();
-    }
-    // next the left-over single 3003 device
->>>>>>> upstream/master
     {
         int n = (int)MultiBAOFarmDevicesChs.size() / 4;
         for ( unsigned int i = 0; i < 4; i++ )
@@ -243,20 +227,12 @@ bool CVocodecs::Init(void)
         }
         MultiBAOFarmDevicesChs.clear();
     }
-<<<<<<< HEAD
 
     // and finally interlace multi-3003 and pairs of 3003 devices which always
     // results to 6 channels per pair of 3003
     {
         int n = (int)Multi3003DevicesChs.size() / 6;
         for ( unsigned int i = 0; i < 6; i++ )
-=======
-    // finally interlace multi-3003 and pairs of 3003 devices which always
-    // results to 6 channels per pair of 3003
-    {
-        int n = (int)Multi3003DevicesChs.size() / 6;
-        for ( int i = 0; (i < 6) && (n != 0); i++ )
->>>>>>> upstream/master
         {
             for ( int j = 0; j < n; j++ )
             {
@@ -265,7 +241,6 @@ bool CVocodecs::Init(void)
         }
         Multi3003DevicesChs.clear();
     }
-<<<<<<< HEAD
     
     // next the left-over single 3003 device
     {
@@ -284,17 +259,6 @@ bool CVocodecs::Init(void)
         }
         PairsOf3000DevicesChs.clear();
     }
-=======
-    // and finaly the hybrid combination of 3003 / 3000
-    {
-        for ( int i = 0;  i < Combined3003And3000DeviceChannels.size(); i++ )
-        {
-            m_Channels.push_back(Combined3003And3000DeviceChannels.at(i));
-        }
-        Combined3003And3000DeviceChannels.clear();
-    }
-
->>>>>>> upstream/master
     
     // done
     if ( ok )
