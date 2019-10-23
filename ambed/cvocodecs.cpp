@@ -136,7 +136,7 @@ bool CVocodecs::Init(void)
             // found one ?
             if ( found )
             {
-                // yes, create and pairboth interfaces
+                // yes, create and pair both interfaces
                 iNbCh += CFtdiDeviceDescr::CreateInterfacePair(descr1, descr2, &PairsOf3000DevicesChs);
                 // and flag as used
                 descr1->SetUsed(true);
@@ -153,8 +153,7 @@ bool CVocodecs::Init(void)
         CFtdiDeviceDescr *descr2 = NULL;
         if ( !descr1->IsUsed() && (descr1->GetNbChannels() == 3) )
         {
-            // any other odd channel device to pair with ?
-            // any other single channel device to pair with ?
+            // any other 3 channel device to pair with ?
             bool found = false;
             unsigned int j = i+1;
             while ( !found && (j < m_FtdiDeviceDescrs.size()) )
@@ -166,8 +165,38 @@ bool CVocodecs::Init(void)
             // found one ?
             if ( found )
             {
-                // yes, create and pairboth interfaces
+                // yes, create and pair both interfaces
                 iNbCh += CFtdiDeviceDescr::CreateInterfacePair(descr1, descr2, &Multi3003DevicesChs);
+                // and flag as used
+                descr1->SetUsed(true);
+                descr2->SetUsed(true);
+            }
+        }
+    }
+    // at this point we should have only remaining an unique 3 channels
+    // and or a unique single channel
+    std::vector<CVocodecChannel *>  Combined3003And3000DeviceChannels;
+    for ( int i = 0; i < m_FtdiDeviceDescrs.size(); i++ )
+    {
+        CFtdiDeviceDescr *descr1 = m_FtdiDeviceDescrs[i];
+        CFtdiDeviceDescr *descr2 = NULL;
+        // Any 3003  ?
+        if ( !descr1->IsUsed() && (descr1->GetNbChannels() == 3) )
+        {
+            // any single channel device to pair with ?
+            bool found = false;
+            int j = 0;
+            while ( !found && (j < m_FtdiDeviceDescrs.size()) )
+            {
+                descr2 = m_FtdiDeviceDescrs[j];
+                found = ((descr1 != descr2) && !descr2->IsUsed() && (descr2->GetNbChannels() == 1));
+                j++;
+            }
+            // found one ?
+            if ( found )
+            {
+                // yes, create and pair both interfaces
+                iNbCh += CFtdiDeviceDescr::CreateInterfacePair(descr1, descr2, &Combined3003And3000DeviceChannels);
                 // and flag as used
                 descr1->SetUsed(true);
                 descr2->SetUsed(true);
@@ -181,7 +210,8 @@ bool CVocodecs::Init(void)
             }
         }
     }
-    
+    // at this point we should possible only have unique 3003 remaining
+
     // now agregate channels by order of priority
     // for proper load sharing
 
