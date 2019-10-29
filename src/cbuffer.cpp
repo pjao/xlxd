@@ -214,7 +214,7 @@ void CBuffer::DebugDumpAscii(std::ofstream &debugout) const
         {
             debugout << '.';
         }
-        if ( unsigned i == size()-1 )
+        if ( i == size()-1 )
         {
             debugout << std::endl;
         }
