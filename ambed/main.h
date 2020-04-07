@@ -49,11 +49,7 @@
 
 #define VERSION_MAJOR                   1
 #define VERSION_MINOR                   3
-<<<<<<< HEAD
-#define VERSION_REVISION                3
-=======
 #define VERSION_REVISION                5
->>>>>>> upstream/master
 
 // global ------------------------------------------------------
 
