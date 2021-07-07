@@ -139,11 +139,11 @@ void CProtocol::OnDvFramePacketIn(CDvFramePacket *Frame, const CIp *Ip)
     // find the stream
     CPacketStream *stream = GetStream(Frame->GetStreamId(), Ip);
     if ( stream == NULL )
-	{
-		std::cout << "Deleting oprhaned Frame Packet with StreamId " << Frame->GetStreamId() << " from " << *Ip << std::endl;
-		delete Frame;
-	}
-	else
+    {
+        // std::cout << "Deleting oprhaned Frame Packet with StreamId " << Frame->GetStreamId() << " from " << *Ip << std::endl;
+        delete Frame;
+    }
+    else
     {
         //std::cout << "DV frame" << "from "  << *Ip << std::endl;
         // and push
@@ -158,17 +158,38 @@ void CProtocol::OnDvLastFramePacketIn(CDvLastFramePacket *Frame, const CIp *Ip)
     // find the stream
     CPacketStream *stream = GetStream(Frame->GetStreamId(), Ip);
     if ( stream == NULL )
- 	{
-		std::cout << "Deleting oprhaned Last Frame Packet with StreamId " << Frame->GetStreamId() << " from " << *Ip << std::endl;
-		delete Frame;
-	}
-	else
+    {
+        // std::cout << "Deleting oprhaned Last Frame Packet with StreamId " << Frame->GetStreamId() << " from " << *Ip << std::endl;
+        delete Frame;
+    }
+    else
     {
         // push
         stream->Lock();
         stream->Push(Frame);
         stream->Unlock();
 
+        // wait stream queue is empty, same as done in CloseStream(), but we need it before HandleQueue()
+        bool bEmpty = false;
+        do
+        {
+            stream->Lock();
+            // do not use stream->IsEmpty() has this "may" never succeed
+            // and anyway, the DvLastFramPacket short-circuit the transcoder
+            // loop queues
+            bEmpty = stream->empty();
+            stream->Unlock();
+            if ( !bEmpty )
+            {
+                // wait a bit
+                CTimePoint::TaskSleepFor(10);
+            }
+        } while (!bEmpty);
+
+        // handle queue from reflector a bit earlier, before closing the stream,
+        // this avoid last packets to be sent back to transmitting client (master)
+        HandleQueue();
+        
         // and close the stream
         g_Reflector.CloseStream(stream);
     }
@@ -266,3 +287,4 @@ uint32 CProtocol::ModuleToDmrDestId(char m) const
 {
     return (uint32)(m - 'A')+1;
 }
+
